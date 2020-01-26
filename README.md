@@ -25,14 +25,12 @@ For the most basic usage, simply provide the text block to be highlighted, and a
 ```
 
 ```ts
-import * as React from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { InteractiveHighlighter } from 'react-interactive-highlighter';
+import './index.css';
 
 class TextWithHighlights extends React.Component {
-    constructor() {
-        super();
-    }
-
     render() {
         const text = "The sky above the port was the color of television, tuned to a dead channel."
         const highlights = [
@@ -51,28 +49,32 @@ class TextWithHighlights extends React.Component {
 ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 ```
 
+![result of simple example](https://github.com/jrheling/react-interactive-highlighter/examples/static-highlights/example.png)
+
 If a `selectionHandler()` is provided, it will be called `onMouseUp` to allow new highlights to be created:
 
 ```ts
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { InteractiveHighlighter } from 'react-interactive-highlighter';
+import './index.css';
 
 class TextWithHighlights extends React.Component {
     constructor() {
         super();
         this.state = {
-            text: "I saw the best minds of my generation destroyed by madness, starving hysterical naked, dragging themselves through the negro streets at dawn looking for an angry fix, angelheaded hipsters burning for the ancient heavenly connection to the starry dynamo in the machinery of night...";
+            text: "I saw the best minds of my generation destroyed by madness, starving hysterical naked, dragging themselves...",
             highlights: []
         }
         this.selectionHandler = this.selectionHandler.bind(this);
     }
 
-    selectionHandler(selected, startIndex, endIndex) {
+    selectionHandler(selected, startIndex, numChars) {
         this.setState({
             text: this.state.text,
-            highights: this.state.highlights.append({
+            highights: this.state.highlights.push({
                 startIndex: startIndex,
-                numChars: endIndex - startIndex
+                numChars: numChars
             })
         })
     }
@@ -92,6 +94,10 @@ class TextWithHighlights extends React.Component {
 ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 ```
 
+![result of dynamic example](https://github.com/jrheling/react-interactive-highlighter/examples/dynamic-highlights/example.gif)
+
+<!-- http://www.giphy.com/gifs/iJ1fTaqEc5TbETRgcC -->
+
 ### Features
 
 * Supports multiple highlights
@@ -105,7 +111,7 @@ ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 | text | String | Yes | The text containing highlights. |
 | customClass | String |  | CSS class used for highlighted sections ("default" if not defined). |
 | highlights | List<Object> | Yes | List of highlights, each defined by an object with properties `startIndex` (from 0) and `numChars` |
-| selectionHandler | Function |  | Called whenever a new selection is made (via `onMouseUp`) - will receive the selected string and its start/end indexes in the `text` param. |
+| selectionHandler | Function |  | Called whenever a new selection is made (via `onMouseUp`) - will receive the selected string, its start index in the `text` param, and its length. |
 | getSelectionFn | Function |  | Hook to provide a mock for unit testing purposes (see tests for usage example). |
 
 ## Thanks

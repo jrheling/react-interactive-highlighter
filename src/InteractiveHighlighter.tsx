@@ -11,7 +11,7 @@ interface InteractiveHighlighterProps {
     // List of highlights.
     highlights: { startIndex: number, numChars: number }[];
     // If defined, this function will be called whenever a new selection is made.
-    selectionHandler?(selection: string, selectionStart: number, selectionEnd: number): void;
+    selectionHandler?(selection: string, selectionStart: number, selectionLen: number): void;
     // Used only to mock around the DOM for testing purposes.
     getSelectionFn?(): SelectionMarker
 }
