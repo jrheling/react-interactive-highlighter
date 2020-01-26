@@ -2,7 +2,7 @@
 
 A React component to select and display an arbitrary number of highlighted subsections in a text body.
 
-A lot of other higlighter components focus on display only, and expect logic outside of the component to determine which strings should be highlighted. While `react-interactive-highlighter` can be used this way, it _also_ allows creation of new highlights at runtime via text selection.
+A lot of other highlighter components focus on display only, and expect logic outside of the component to determine which strings should be highlighted. While `react-interactive-highlighter` can be used this way, it _also_ allows creation of new highlights at runtime via text selection.
 
 ## Installation
 
