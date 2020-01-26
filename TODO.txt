@@ -1,0 +1,3 @@
+* remove comments from tsconfig.json
+* remove FIXMEs
+* rename class

@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "declaration": true,
+    "allowJs": false,
+    "sourceMap": true,
+    // "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    // "isolatedModules": true,
+    // "noEmit": true,
+    "jsx": "react",
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    // "types": [
+    //   // "reflect-metadata",
+    //   "jest"
+    // ],
+    "typeRoots": ["./types", "./node_modules/@types"]
+  },
+  "exclude": ["node_modules", "build", "**/*.spec.ts", "**/*.test.ts"],
+  "include": [
+    "src"
+  ]
+}
