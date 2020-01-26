@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A React component to select and display an arbitrary number of highlighted subsections in a text body.",
   "main": "lib/index.js",
+  "homepage": "https://github.com/jrheling/react-interactive-highlighter#readme",
   "scripts": {
     "build": "yarn clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
     "clean": "shx rm -rf _bundles lib lib-esm",
@@ -19,7 +20,8 @@
     "multiple",
     "interactive"
   ],
-  "author": "Josh Heling",
+  "author": "Josh Heling <jrh-npm@netfluvia.org> (https://netfluvia.com/",
+  "repository": "github:jrheling/react-interactive-highlighter",
   "license": "MIT",
   "devDependencies": {
     "@types/enzyme": "^3.10.4",

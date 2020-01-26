@@ -49,7 +49,7 @@ class TextWithHighlights extends React.Component {
 ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 ```
 
-![](examples/static-highlights/example.png)
+![static example](examples/static-highlights/example.png)
 
 If a `selectionHandler()` is provided, it will be called `onMouseUp` to allow new highlights to be created:
 
@@ -94,7 +94,7 @@ class TextWithHighlights extends React.Component {
 ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 ```
 
-![](examples/dynamic-highlights/example.gif)
+![dynamic example](examples/dynamic-highlights/example.gif)
 
 <!-- http://www.giphy.com/gifs/iJ1fTaqEc5TbETRgcC -->
 
@@ -110,7 +110,7 @@ ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 |:---|:---|:---:|:---|
 | text | String | Yes | The text containing highlights. |
 | customClass | String |  | CSS class used for highlighted sections ("default" if not defined). |
-| highlights | List<Object> | Yes | List of highlights, each defined by an object with properties `startIndex` (from 0) and `numChars` |
+| highlights | List of objects | Yes | List of highlights, each defined by an object with properties `startIndex` (from 0) and `numChars` |
 | selectionHandler | Function |  | Called whenever a new selection is made (via `onMouseUp`) - will receive the selected string, its start index in the `text` param, and its length. |
 | getSelectionFn | Function |  | Hook to provide a mock for unit testing purposes (see tests for usage example). |
 
