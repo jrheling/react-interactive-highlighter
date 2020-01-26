@@ -2,9 +2,10 @@
   "name": "react-interactive-highlighter",
   "version": "0.1.0",
   "description": "A React component to select and display an arbitrary number of highlighted subsections in a text body.",
-  "main": "build/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "yarn clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
+    "clean": "shx rm -rf _bundles lib lib-esm",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "test": "jest",
     "prepare": "yarn test && yarn lint && yarn build"
@@ -28,13 +29,18 @@
     "@types/react-dom": "^16.9.5",
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
+    "awesome-typescript-loader": "^5.2.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.18.0",
     "jest": "^25.1.0",
+    "shx": "^0.3.2",
     "ts-jest": "^25.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "jest": {
     "preset": "ts-jest",

@@ -4,10 +4,15 @@ type SelectionMarker = {selectionStart: number, selectionLength: number};
 type Segment = { start: number, end: number, highlights: number[]};
 
 interface InteractiveHighlighterProps {
+    // The text containing highlights.
     text: string;
+    // CSS class used for highlighted sections ("default" if not defined).
     customClass?: string;
+    // List of highlights.
     highlights: { startIndex: number, numChars: number }[];
+    // If defined, this function will be called whenever a new selection is made.
     selectionHandler?(selection: string, selectionStart: number, selectionEnd: number): void;
+    // Used only to mock around the DOM for testing purposes.
     getSelectionFn?(): SelectionMarker
 }
 
