@@ -49,7 +49,7 @@ class TextWithHighlights extends React.Component {
 ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 ```
 
-![result of simple example](https://raw.githubusercontent.com/jrheling/react-interactive-highlighter/master/examples/static-highlights/example.png)
+![](examples/static-highlights/example.png)
 
 If a `selectionHandler()` is provided, it will be called `onMouseUp` to allow new highlights to be created:
 
@@ -94,7 +94,7 @@ class TextWithHighlights extends React.Component {
 ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 ```
 
-![result of dynamic example](https://raw.githubusercontent.com/jrheling/react-interactive-highlighter/master/examples/dynamic-highlights/example.gif)
+![](examples/dynamic-highlights/example.gif)
 
 <!-- http://www.giphy.com/gifs/iJ1fTaqEc5TbETRgcC -->
 
