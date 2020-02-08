@@ -161,11 +161,14 @@ export class InteractiveHighlighter extends Component<InteractiveHighlighterProp
             // special case - no highlights
             segments.push({start: 0, end: this.props.text.length, highlights: []})
         } else {
-            // add a segment with any text following the last highlight
-            if (segmentStart < this.props.text.length) {
-                segments.push({start: segmentStart, end: this.props.text.length, highlights: []})
-            }
+            // record the final segment
+            segments.push({
+                start: segmentStart,
+                end: this.props.text.length,
+                highlights: currentHighlights.map( (e,i) => e ? i : -1).filter(e => e!== -1)
+            })
         }
+        console.log(`returning ${segments.length} segments from _computeSegments()`)
         return(segments)
     }
 
@@ -175,7 +178,6 @@ export class InteractiveHighlighter extends Component<InteractiveHighlighterProp
 
         if (marker && marker.selectionLength) {
             const selection = this.props.text.substr(marker.selectionStart, marker.selectionLength);
-
             if (this.props.selectionHandler) {
                 this.props.selectionHandler(
                     selection,

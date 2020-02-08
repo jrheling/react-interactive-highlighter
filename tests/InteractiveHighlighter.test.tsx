@@ -42,13 +42,17 @@ describe('<InteractiveHighlighter />', () => {
             //    0123456789x
             text="foo bar baz"
             highlights={[{startIndex: 4, numChars: 3}]}
+            customClass="MyClass"
             />
         );
         // console.debug(wrapper.debug());
         expect(wrapper.find('[data-segment]')).toHaveLength(3);
         expect(wrapper.find({ 'data-segment': 0}).text()).toEqual("foo ");
+        expect(wrapper.find({ 'data-segment': 0}).prop('className')).not.toEqual('MyClass');
         expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("bar");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('MyClass');
         expect(wrapper.find({ 'data-segment': 2}).text()).toEqual(" baz");
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).not.toEqual('MyClass');
     });
 
     it('uses the specified className when highlighting', () => {
@@ -85,13 +89,23 @@ describe('<InteractiveHighlighter />', () => {
                 {startIndex: 35, numChars: 1}, // "t"
                 {startIndex: 38, numChars: 15} // "come to the aid"
             ]}
+            customClass="MyClass"
             />
         );
         // console.debug(wrapper.debug());
         expect(wrapper.find('[data-segment]')).toHaveLength(7);
         expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("is the time");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('MyClass');
+
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).not.toEqual('MyClass');
+
         expect(wrapper.find({ 'data-segment': 3}).text()).toEqual("t");
+        expect(wrapper.find({ 'data-segment': 3}).prop('className')).toEqual('MyClass');
+
+        expect(wrapper.find({ 'data-segment': 4}).prop('className')).not.toEqual('MyClass');
+
         expect(wrapper.find({ 'data-segment': 5}).text()).toEqual("come to the aid");
+        expect(wrapper.find({ 'data-segment': 5}).prop('className')).toEqual('MyClass');
     });
 
     it('allows overlapping substrings', () => {
@@ -103,12 +117,18 @@ describe('<InteractiveHighlighter />', () => {
                 {startIndex: 4, numChars: 11},  // "is the time"
                 {startIndex: 11, numChars: 20}, // "time for all good fo" (overlaps)
             ]}
+            customClass="MyClass"
             />
         );
         expect(wrapper.find('[data-segment]')).toHaveLength(5);
         expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("is the ");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('MyClass');
+
         expect(wrapper.find({ 'data-segment': 2}).text()).toEqual("time");
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).toEqual('MyClass');
+
         expect(wrapper.find({ 'data-segment': 3}).text()).toEqual(" for all good fo");
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).toEqual('MyClass');
     });
 
     it('correctly handles insanely overlapping substrings', () => {
@@ -193,9 +213,11 @@ describe('<InteractiveHighlighter />', () => {
             highlights={[
                 {startIndex: 0, numChars: 4}, // "now "
             ]}
+            customClass="MyClass"
             />
         );
         expect(wrapper.find({ 'data-segment': 0}).text()).toEqual("now ");
+        expect(wrapper.find({ 'data-segment': 0}).prop('className')).toEqual('MyClass');
     });
 
     it('correctly highlights substrings at the end of the text', () => {
@@ -206,10 +228,32 @@ describe('<InteractiveHighlighter />', () => {
             highlights={[
                 {startIndex: 63, numChars: 7}, // "country"
             ]}
+            customClass="MyClass"
             />
         );
         //console.log(wrapper.debug());
         expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("country");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('MyClass');
+    });
+
+    it('correctly highlights substrings _almost_ at the end of the text', () => {
+        const wrapper = mount(
+            <InteractiveHighlighter
+            //    0123456789x    5    2    5    3    5    4    5    5    5    6    5    (end=69)
+            text="now is the time for all good folks to come to the aid of their country."
+            highlights={[
+                {startIndex: 63, numChars: 7}, // "country"
+            ]}
+            customClass="MyClass"
+            />
+        );
+        //console.log(wrapper.debug());
+        expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("country");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('MyClass');
+
+        expect(wrapper.find({ 'data-segment': 2}).text()).toEqual(".");
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).not.toEqual('MyClass');
+
     });
 
     it('handles new selections made in the text', () => {
