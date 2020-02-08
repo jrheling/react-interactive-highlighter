@@ -168,7 +168,6 @@ export class InteractiveHighlighter extends Component<InteractiveHighlighterProp
                 highlights: currentHighlights.map( (e,i) => e ? i : -1).filter(e => e!== -1)
             })
         }
-        console.log(`returning ${segments.length} segments from _computeSegments()`)
         return(segments)
     }
 
