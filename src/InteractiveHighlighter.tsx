@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from 'react';
 
-type SelectionMarker = {selectionStart: number, selectionLength: number};
+export type SelectionMarker = {selectionStart: number, selectionLength: number};
 type Segment = { start: number, end: number, highlights: number[]};
 
 interface InteractiveHighlighterProps {
@@ -8,6 +8,14 @@ interface InteractiveHighlighterProps {
     text: string;
     // CSS class used for highlighted sections ("default" if not defined).
     customClass?: string;
+    // If defined, this function will be passed the highlights active for a section
+    // and will be expected to return the CSS classes to use for it.
+    //
+    // Notes:
+    // * This is used *instead* of customClass (if defined).
+    // * This is called for every segment, even those with no highlight
+    //
+    customClassFn?(highlightIndexes: number[]): string;
     // List of highlights.
     highlights: { startIndex: number, numChars: number }[];
     // If defined, this function will be called whenever a new selection is made.
@@ -45,6 +53,7 @@ function arraysEqual<T>(a: Array<T>, b: Array<T>): boolean {
  */
 export class InteractiveHighlighter extends Component<InteractiveHighlighterProps, {}> {
     private _getSelectionMarker: Function;
+    private _customClassFn: Function;
     private _segments: Segment[];
 
     constructor(props: InteractiveHighlighterProps) {
@@ -55,6 +64,16 @@ export class InteractiveHighlighter extends Component<InteractiveHighlighterProp
             this._getSelectionMarker = this._getSelectionFromDOM;
         }
         this.onMouseUpHandler = this.onMouseUpHandler.bind(this);
+        if (this.props.customClassFn) {
+            this._customClassFn = this.props.customClassFn;
+        } else {
+            this._customClassFn = (highlightIndexes: number[]): string => {
+                if (highlightIndexes.length > 0) {
+                    return this.props.customClass || "default";
+                }
+                return "";
+            }
+        }
         this._segments = [];
     }
 
@@ -199,14 +218,15 @@ export class InteractiveHighlighter extends Component<InteractiveHighlighterProp
                 markedUp.push(<span
                     key={"d"+segmentNum}
                     data-segment={segmentNum}
-                    className={this.props.customClass || "default"}>
+                    className={this._customClassFn(this._segments[segmentNum].highlights)}>
                 {textContent.substr(spanStart, spanLen)}
                 </span>);
             } else {
                 // non-highlighted
                 markedUp.push(<span
                     key={"d"+segmentNum}
-                    data-segment={segmentNum}>
+                    data-segment={segmentNum}
+                    className={this._customClassFn(this._segments[segmentNum].highlights)}>
                 {textContent.substr(spanStart, spanLen)}
                 </span>);
             }

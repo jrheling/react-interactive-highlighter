@@ -109,7 +109,8 @@ ReactDOM.render(<TextWithHighlights />, document.getElementById('root'));
 | Property | Type | Required? | Description |
 |:---|:---|:---:|:---|
 | text | String | Yes | The text containing highlights. |
-| customClass | String |  | CSS class used for highlighted sections ("default" if not defined). |
+| customClass | String |  | CSS class used for highlighted sections ("default" if not defined). **Note:** Not used if `customClassFn` is provided.|
+| customClassFn | Function |  | Callback function that takes a list of highlight indexes and returns a className to use for a given segment of text. (This lets the parent component logic choose highlighting visuals based on the substance of the data.) |
 | highlights | List of objects | Yes | List of highlights, each defined by an object with properties `startIndex` (from 0) and `numChars` |
 | selectionHandler | Function |  | Called whenever a new selection is made (via `onMouseUp`) - will receive the selected string, its start index in the `text` param, and its length. |
 | getSelectionFn | Function |  | Hook to provide a mock for unit testing purposes (see tests for usage example). |

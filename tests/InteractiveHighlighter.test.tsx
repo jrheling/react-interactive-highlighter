@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { InteractiveHighlighter } from '../src/InteractiveHighlighter';
+import { InteractiveHighlighter, SelectionMarker } from '../src/InteractiveHighlighter';
 import { shallow, mount } from 'enzyme';
 
 enzyme.configure({ adapter: new Adapter() });
@@ -12,6 +12,7 @@ describe('<InteractiveHighlighter />', () => {
 
     it('should work', () => {
         const wrapper = shallow(<InteractiveHighlighter text="blah" highlights={[]}/>);
+        expect(wrapper).toBeTruthy;
     });
 
     it('allows us to set props', () => {
@@ -263,7 +264,7 @@ describe('<InteractiveHighlighter />', () => {
             //    0123456789x    5    2    5    3    5    4    5    5    5    6    5    (end=69)
             text="now is the time for all good folks to come to the aid of their country"
             highlights={[]}
-            getSelectionFn={() => {
+            getSelectionFn={(): SelectionMarker => {
                 return {selectionStart: 20, selectionLength: 14};
             }}
             selectionHandler={handlerFunc}
@@ -284,7 +285,7 @@ describe('<InteractiveHighlighter />', () => {
                 {startIndex: 4, numChars: 11},
                 {startIndex: 55, numChars: 2}
             ]}
-            getSelectionFn={() => {
+            getSelectionFn={(): SelectionMarker => {
                 return {selectionStart: 20, selectionLength: 14};
             }}
             selectionHandler={handlerFunc}
@@ -293,6 +294,81 @@ describe('<InteractiveHighlighter />', () => {
 
         wrapper.simulate("mouseup");
         expect(handlerFunc).toHaveBeenCalledWith("all good folks", 20, 14);
+    });
+
+    it('uses the CSS class selecting function, if provided', () => {
+        const wrapper = mount(
+            <InteractiveHighlighter
+            //    0123456789x    5    2    5    3    5    4    5    5    5    6    5    (end=69)
+            text="now is the time for all good folks to come to the aid of their country"
+            highlights={[
+                {startIndex: 4, numChars: 11}, // "is the time"
+                {startIndex: 35, numChars: 1}, // "t"
+                {startIndex: 38, numChars: 15} // "come to the aid"
+            ]}
+            customClass="MyClass"
+            customClassFn={(): string =>  {
+                return "OtherClass";
+            }}
+            />
+        );
+
+        // the customClassFn will be called for every segment, not just those with highlights
+
+        // console.debug(wrapper.debug());
+        expect(wrapper.find('[data-segment]')).toHaveLength(7);
+        expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("is the time");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('OtherClass');
+
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).toEqual('OtherClass');
+
+        expect(wrapper.find({ 'data-segment': 3}).text()).toEqual("t");
+        expect(wrapper.find({ 'data-segment': 3}).prop('className')).toEqual('OtherClass');
+
+        expect(wrapper.find({ 'data-segment': 4}).prop('className')).toEqual('OtherClass');
+
+        expect(wrapper.find({ 'data-segment': 5}).text()).toEqual("come to the aid");
+        expect(wrapper.find({ 'data-segment': 5}).prop('className')).toEqual('OtherClass');
+    });
+
+    it('selects classes based on the passed highlight index', () => {
+        const wrapper = mount(
+            <InteractiveHighlighter
+            //    0123456789x    5    2    5    3    5    4    5    5    5    6    5    (end=69)
+            text="now is the time for all good folks to come to the aid of their country"
+            highlights={[
+                {startIndex: 4, numChars: 11}, // "is the time"
+                {startIndex: 35, numChars: 1}, // "t"
+                {startIndex: 38, numChars: 15} // "come to the aid"
+            ]}
+            customClass="MyClass" // should be ignored, since function exists
+            customClassFn={(hlIdx: number[]): string => {
+                // "classEven" / "classOdd", based on index
+                // for the sake of test simplicity, we only look at the first highlight index here
+                if (hlIdx.length == 0) {
+                    return ""
+                } else if (hlIdx[0] % 2) {
+                    return "classOdd"
+                } else {
+                    return "classEven"
+                }
+            }}
+            />
+        );
+        // console.debug(wrapper.debug());
+        expect(wrapper.find('[data-segment]')).toHaveLength(7);
+        expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("is the time");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('classEven');
+
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).toEqual('');
+
+        expect(wrapper.find({ 'data-segment': 3}).text()).toEqual("t");
+        expect(wrapper.find({ 'data-segment': 3}).prop('className')).toEqual('classOdd');
+
+        expect(wrapper.find({ 'data-segment': 4}).prop('className')).toEqual('');
+
+        expect(wrapper.find({ 'data-segment': 5}).text()).toEqual("come to the aid");
+        expect(wrapper.find({ 'data-segment': 5}).prop('className')).toEqual('classEven');
     });
 
 });

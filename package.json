@@ -1,6 +1,6 @@
 {
   "name": "react-interactive-highlighter",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A React component to select and display an arbitrary number of highlighted subsections in a text body.",
   "main": "lib/index.js",
   "homepage": "https://github.com/jrheling/react-interactive-highlighter#readme",
