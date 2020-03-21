@@ -56,6 +56,30 @@ describe('<InteractiveHighlighter />', () => {
         expect(wrapper.find({ 'data-segment': 2}).prop('className')).not.toEqual('MyClass');
     });
 
+    /* When sourcing highlights from e.g. an API, it's possible that some string values
+     * sneak through. Make sure they are handled correctly.
+     */
+    it('correctly highlights based on props even when numbers are passed as strings', () => {
+        const start = "4" as unknown;
+        const chars = "3" as unknown;
+        const wrapper = mount(
+            <InteractiveHighlighter
+            //    0123456789x
+            text="foo bar baz"
+            highlights={[{startIndex: start as number, numChars: chars as number}]}
+            customClass="MyClass"
+            />
+        );
+        // console.debug(wrapper.debug());
+        expect(wrapper.find('[data-segment]')).toHaveLength(3);
+        expect(wrapper.find({ 'data-segment': 0}).text()).toEqual("foo ");
+        expect(wrapper.find({ 'data-segment': 0}).prop('className')).not.toEqual('MyClass');
+        expect(wrapper.find({ 'data-segment': 1}).text()).toEqual("bar");
+        expect(wrapper.find({ 'data-segment': 1}).prop('className')).toEqual('MyClass');
+        expect(wrapper.find({ 'data-segment': 2}).text()).toEqual(" baz");
+        expect(wrapper.find({ 'data-segment': 2}).prop('className')).not.toEqual('MyClass');
+    });
+
     it('uses the specified className when highlighting', () => {
         const wrapper = mount(
             <InteractiveHighlighter

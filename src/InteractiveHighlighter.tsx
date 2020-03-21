@@ -159,7 +159,7 @@ export class InteractiveHighlighter extends Component<InteractiveHighlighterProp
             // build an array of booleans corresponding to each highlight - true means
             //  the current character is in the given highlight
             const highlightsIncludingThisChar = highlights.map(
-                h => (idx >= (h.startIndex)) && (idx < h.startIndex + h.numChars) ? true : false
+                h => (idx >= Number(h.startIndex)) && (idx < Number(h.startIndex) + Number(h.numChars)) ? true : false
             )
             if (! arraysEqual(currentHighlights, highlightsIncludingThisChar)) {
                 // the current character is the start of the next segment
