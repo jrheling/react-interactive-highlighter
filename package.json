@@ -40,6 +40,7 @@
     "shx": "^0.3.2",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^5.39.1",
     "webpack-cli": "^3.3.10"
   },
@@ -64,5 +65,8 @@
   "peerDependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
+  },
+  "resolutions": {
+    "@types/react": "^16.9.19"
   }
 }
